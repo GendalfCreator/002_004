@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <time.h>
 
+//01. пузырьковая сортировка двумерного массива
 void swap(int *a, int *b) {
   int temp;
 
@@ -59,19 +61,65 @@ void fillExample(int** array, int rows, int cols) {
     }
 }
 
+//02. алгоритм Трабба-Прадо-Кнута
+void print1dIntArray(int* array, int length) {
+  for (int i = 0; i < length; i++) {
+      printf("%4d%s", array[i], (i == length - 1 ? "\n" : ""));
+    }
+}
+
+void mirror1dIntArray(int* array, int length) {
+  for (int i = 0; i < length / 2; i++) {
+      int t = 0;
+      t = array[i];
+      array[i] = array[(length - 1) - i];
+      array[(length - 1) - i] = t;
+    }
+
+}
+
+void T_P_K(){
+  const int LENGTH = 11;
+  int array[LENGTH];
+
+  for (int i = 0; i < LENGTH; i++) {
+      scanf("%d", &array[i]);
+      fflush(stdin);
+    }
+
+  print1dIntArray(array, LENGTH);
+
+  mirror1dIntArray(array,LENGTH);
+
+  print1dIntArray(array, LENGTH);
+
+  printf("\n");
+
+  for (int i = 0; i < LENGTH; i++) {
+      if (sqrt(fabs((float)array[i]) + 5 * pow(array[i], 3)) > 400) {
+          printf(" NAN");
+        }
+      else {
+          printf(" %2.1f %s", sqrt(fabs((float)array[i]) + 5 * pow(array[i], 3)), (i == LENGTH - 1 ? "\n" : ""));
+        }
+    }
+}
+
 int main()
 {
+//01. пузырьковая сортировка двумерного массива
   const int cols = 3;
   const int rows = 3;
 
   int** arr = init2dIntArray(cols, rows);
 
-
   fillExample(arr, cols, rows);
   print2dIntArray(arr, cols, rows);
-
   bubbleSort(arr, cols, rows);
   print2dIntArray(arr, cols, rows);
+
+//02. алгоритм Трабба-Прадо-Кнута
+  T_P_K();
 
   return 0;
 }
