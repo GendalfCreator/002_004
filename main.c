@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
-
-void swap(int* a, int* b) {
+void swap(int *a, int *b) {
   int temp;
 
   temp = *a;
@@ -10,10 +10,24 @@ void swap(int* a, int* b) {
   *b = temp;
 }
 
-void bubbleSort(int** arr, int length) {
-  for (int j = 0; j < 9; j++) {
-      if (arr[0][j] > arr[0][j +1]){
-          swap(&arr[0][j], &arr[0][j + 1]);
+void bubbleSort(int** arr, int cols, int rows) {
+  for (int k = 0; k < cols * rows; k++) {//проход по всем элементам строки
+      for (int i = 0; i < rows; i ++) {
+          for (int j = 0; j < cols; j++) {
+              if (i == rows - 1 && j == cols -1) {
+                  continue;
+                }
+              else if (j == cols - 1) {
+                  if (arr[i][j] > arr [i + 1][0]) {
+                      swap(&arr[i][j], &arr[i + 1][0]);
+                    }
+                }
+              else {
+                  if (arr[i][j] > arr [i][j + 1]) {
+                      swap(&arr[i][j], &arr[i][j + 1]);
+                    }
+                }
+            }
         }
     }
 }
@@ -36,29 +50,28 @@ int** init2dIntArray(const int cols, const int rows) {
   return array;
 }
 
-void fillExample(int** array) {
-  *((*(array + 0)) + 0) = 2;
-  *((*(array + 0)) + 1) = 8;
-  *((*(array + 0)) + 2) = 5;
-  *((*(array + 1)) + 0) = 4;
-  *((*(array + 1)) + 1) = 9;
-  *((*(array + 1)) + 2) = 6;
-  *((*(array + 2)) + 0) = 1;
-  *((*(array + 2)) + 1) = 7;
-  *((*(array + 2)) + 2) = 3;
+void fillExample(int** array, int rows, int cols) {
+  srand(time(NULL));
+  for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < cols; j++) {
+          *((*(array + i)) + j) = rand() % 10;
+        }
+    }
 }
 
 int main()
 {
-  int** arr = init2dIntArray(3, 3);
+  const int cols = 3;
+  const int rows = 3;
+
+  int** arr = init2dIntArray(cols, rows);
 
 
-  fillExample(arr);
-  print2dIntArray(arr, 6, 3);
+  fillExample(arr, cols, rows);
+  print2dIntArray(arr, cols, rows);
 
-  swap((*(arr + 0)) + 2, (*(arr + 0)) + 0);
-
-  print2dIntArray(arr, 3, 3);
+  bubbleSort(arr, cols, rows);
+  print2dIntArray(arr, cols, rows);
 
   return 0;
 }
